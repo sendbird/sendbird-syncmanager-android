@@ -1,2 +1,2 @@
-# SendBird-SyncManager-SDK-Androi
+# SendBird-SyncManager-SDK-Android
 SendBird SyncManager Android SDK
