@@ -106,7 +106,7 @@ And data fetcher. Fetched channels would be delivered to event subscriber. Event
 collection.fetch(new CompletionHandler() {
     @Override
     public void onCompleted(SendBirdException e) {
-  // This callback is optional and useful to catch the moment of loading ended.
+        // This callback is optional and useful to catch the moment of loading ended.
     }
 });
 ```
@@ -120,10 +120,11 @@ Background sync ceases if the sync is done or sync request is failed.
 For various viewpoint support, `MessageCollection` sets starting point of view (or `viewpointTimestamp`) at creation. The `viewpointTimestamp` is a timestamp to start background sync in both previous and next direction (and also the point where a user sees at first). Here's the code to create `MessageCollection`.
 
 ```java
-MessageFilter filter = new MessageFilter(BaseChannel.MessageTypeFilter.ALL, customType, senderUserIds);
 // customType and senderUserIds can be null.
-long viewpointTimestamp = getLastReadTimestamp();
-// or Long.MAX_VALUE if you want to see the most recent messages
+MessageFilter filter = new MessageFilter(BaseChannel.MessageTypeFilter.ALL, customType, senderUserIds);
+
+
+long viewpointTimestamp = getLastReadTimestamp(); // or Long.MAX_VALUE if you want to see the most recent messages
 MessageCollection collection = new MessageCollection(groupChannel, filter, viewpointTimestamp);
 ```
 
