@@ -23,7 +23,7 @@ We provide sample project to understand `SyncManager` further. Check out [SyncMa
 ### Initialization
 
 ```java
-SendBirdSyncManager.setUp(getApplicationContext(), userId, new CompletionHandler() {
+SendBirdSyncManager.setup(getApplicationContext(), userId, new CompletionHandler() {
     @Override
     public void onCompleted(SendBirdException e) {
         if (e != null) {
