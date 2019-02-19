@@ -15,7 +15,7 @@ repositories {
     maven { url "https://raw.githubusercontent.com/smilefam/sendbird-syncmanager-android/master/" }
 }
 dependencies {
-    compile 'com.sendbird.sdk:sendbird-syncmanager:1.0.0'
+    compile 'com.sendbird.sdk:sendbird-syncmanager:1.0.1'
 }
 ```
 
