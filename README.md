@@ -6,7 +6,7 @@
 [![Maven](https://img.shields.io/badge/maven-v1.0.2-green.svg)](https://github.com/smilefam/sendbird-syncmanager-android/tree/master/com/sendbird/sdk/sendbird-syncmanager/1.0.2)
 [![Commercial License](https://img.shields.io/badge/license-Commercial-brightgreen.svg)](https://github.com/smilefam/sendbird-syncmanager-android/blob/master/LICENSE.md)
 
-SendBird SyncManager is chat data sync management library for SendBird. SyncManager offers an event-based data management framework so that each view would see a single spot by subscribing data event. And it stores the data into SQLite which implements local caching for faster loading.
+SendBird SyncManager is chat data sync management add-on for SendBird. SyncManager offers an event-based data management framework so that each view would listen data event in event handler in order to update the view. And it stores the data into SQLite which implements local caching for faster loading.
 
 ## Install using Gradle
 
@@ -15,9 +15,15 @@ repositories {
     maven { url "https://raw.githubusercontent.com/smilefam/sendbird-syncmanager-android/master/" }
 }
 dependencies {
-    compile 'com.sendbird.sdk:sendbird-syncmanager:1.0.2'
+    // SyncManager
+    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.0'
+
+    // SendBird
+    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.91'
 }
 ```
+
+> Note: `SyncManager SDK` requires [SendBird Android SDK](https://github.com/smilefam/SendBird-SDK-Android) at least version 3.0.91.
 
 ## Sample
 
@@ -49,14 +55,13 @@ Collection is a component to manage data related to a single view. `ChannelColle
 To meet the purpose, each collection has event subscriber and data fetcher. Event subscriber listens data event so that it could apply data update into view, and data fetcher loads data from cache or server and sends the data to event handler.
 
 #### ChannelCollection
+Channel is frequently mutable data where chat is actively going - channel's last message and unread message count may update very often. Even the position of each channel is changing drastically since many apps sort channels by the most recent message. In that context, `ChannelCollection` manages synchronization like below:
 
-Channel is quite mutable data where chat is actively going - channel's last message and unread message count may update very often. Even the position of each channel is changing drastically since many apps sort channels by the most recent message. For that reason, `ChannelCollection` depends mostly on server sync. Here's the process `ChannelCollection` synchronizes data:
-
-1. It loads channels from cache and the view shows them for fast-loading.
-2. Then it fetches the most recent channels from SendBird server and merges with the channels in view.
-3. It fetches from SendBird server every time `fetch()` is called in order to view previous channels.
-
-> Note: Channel data sync mechanism could change later.
+1. Channel collection fulfills full channel sync (one-time) and change log sync when a collection is created.
+   - Full channel sync fetches all channels which match with query. Once full channel sync reaches to the end, it doesn't do it again later.
+   - Change log sync fetches the changes of all channels so that the cache could be up-to-date. The channels fetched by change log sync may get delivered to collection handler if they're supposed to.
+2. Then `fetch()` loads channels from cache to show them in the view.
+3. (Optional) If fetch()-ed channels from cache are not enough (i.e. the number of fetched channels is less than `limit`) and full channel sync is running, then it waits for full channel sync to complete the current request. Once the full channel sync is done with the current request, it loads rest of channels from cache.
 
 `ChannelCollection` requires `GroupChannelListQuery` instance as it binds the query into the collection. Then the collection filters data with the query. Here's the code to create new `ChannelCollection` instance.
 
@@ -128,7 +133,6 @@ For various viewpoint support, `MessageCollection` sets starting point of view (
 // customType and senderUserIds can be null.
 MessageFilter filter = new MessageFilter(BaseChannel.MessageTypeFilter.ALL, customType, senderUserIds);
 
-
 long viewpointTimestamp = getLastReadTimestamp(); // or Long.MAX_VALUE if you want to see the most recent messages
 MessageCollection collection = new MessageCollection(groupChannel, filter, viewpointTimestamp);
 ```
@@ -184,6 +188,15 @@ collection.fetch(MessageCollection.Direction.NEXT, new CompletionHandler() {
 ```
 
 Fetched messages would be delivered to event handler. Event fetcher determines the `action` automatically so you don't have to consider duplicated data in view.
+
+#### Resetting viewpoint
+
+The feature 'Jump to the most recent messages' is commonly used in chat. If the initial viewpoint is the last viewed timestamp and not the most recent one, the user may want to jump to the most recent messages. In that use case, `collection.resetViewpoint()` would be useful.
+
+```java
+long ts = Long.MAX_VALUE;
+collection.resetViewpointTimestamp(ts);
+```
 
 #### Handling uncaught messages
 

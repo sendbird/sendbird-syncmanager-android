@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.1.0 (Mar 19, 2019)
+* Added channel full synchronization support.
+* Improved stability.
+
 ### v1.0.2 (Feb 27, 2019)
 * Fixed minor bug.
 
