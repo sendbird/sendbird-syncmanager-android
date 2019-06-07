@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.1.2 (Jun 7, 2019)
+* Added `SendBirdSyncManager.Options` which is used for message count limit of `MessageCollection` and message resend policy.
+* Added `handleSendMessageResponse()` in `MessageCollection` to support resend failed message.
+
 ### v1.1.1 (Apr 2, 2019)
 * Improved stability.
 

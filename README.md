@@ -16,14 +16,14 @@ repositories {
 }
 dependencies {
     // SyncManager
-    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.0'
+    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.2'
 
     // SendBird
-    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.91'
+    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.96'
 }
 ```
 
-> Note: `SyncManager SDK` requires [SendBird Android SDK](https://github.com/smilefam/SendBird-SDK-Android) at least version 3.0.91.
+> Note: `SyncManager SDK` requires [SendBird Android SDK](https://github.com/smilefam/SendBird-SDK-Android) at least version 3.0.96.
 
 ## Sample
 
@@ -34,7 +34,11 @@ We provide sample project to understand `SyncManager` further. Check out [SyncMa
 ### Initialization
 
 ```java
-SendBirdSyncManager.setup(getApplicationContext(), userId, new CompletionHandler() {
+SendBirdSyncManager.Options options = new SendBirdSyncManager.Options();
+options.setMessageCollectionCapacity(1000);
+options.setMessageResendPolicy(SendBirdSyncManager.MessageResendPolicy.NONE);
+
+SendBirdSyncManager.setup(getApplicationContext(), userId, options, new CompletionHandler() {
     @Override
     public void onCompleted(SendBirdException e) {
         if (e != null) {
