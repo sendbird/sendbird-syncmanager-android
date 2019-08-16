@@ -8,6 +8,10 @@
 
 SendBird SyncManager is chat data sync management add-on for SendBird. SyncManager offers an event-based data management framework so that each view would listen data event in event handler in order to update the view. And it stores the data into SQLite which implements local caching for faster loading.
 
+## Requirements
+
+- SendBird SyncManager works on Android 4.0+ (API level 14), Java 7+ and [SendBird Android SDK](https://github.com/sendbird/SendBird-SDK-Android) 3.0.96+.
+
 ## Install using Gradle
 
 ```
@@ -23,8 +27,6 @@ dependencies {
 }
 ```
 
-> Note: `SyncManager SDK` requires [SendBird Android SDK](https://github.com/sendbird/SendBird-SDK-Android) at least version 3.0.96.
-
 ## Sample
 
 We provide sample project to understand `SyncManager` further. Check out [SyncManager sample](https://github.com/sendbird/SendBird-Android/tree/master/syncmanager).
@@ -34,11 +36,42 @@ We provide sample project to understand `SyncManager` further. Check out [SyncMa
 ### Initialization
 
 ```java
-SendBirdSyncManager.Options options = new SendBirdSyncManager.Options();
-options.setMessageCollectionCapacity(1000);
-options.setMessageResendPolicy(SendBirdSyncManager.MessageResendPolicy.NONE);
+SendBirdSyncManager.Options options = new SendBirdSyncManager.Options.Builder()
+        .setMessageResendPolicy(SendBirdSyncManager.MessageResendPolicy.AUTOMATIC)
+        .setAutomaticMessageResendRetryCount(5).build();
 
-SendBirdSyncManager.setup(getApplicationContext(), userId, options, new CompletionHandler() {
+SendBirdSyncManager.setup(getApplicationContext(), USER_ID, new CompletionHandler() {
+    @Override
+    public void onCompleted(SendBirdException e) {
+        if (e != null) {
+            // Error handling
+           return;
+        }
+    }
+});
+```
+
+### Global Options
+
+You can set global options for operational configurations. Here is the list of the options.
+
+| Option                           | Type                                    | Description                                                                                                                                                                                                                                                                                                                                                                                           |
+| :------------------------------- | :-------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| messageCollectionCapacity        | Integer                                 | Limit the number of messages in a collection. If set, collection holds that number of messages in memory and invokes `remove` event for the messages trimmed out. (default: 1,000, minimum: 200)                                                                                                                                                                                                      |
+| messageResendPolicy              | SendBirdSyncManager.MessageResendPolicy | The policy to resend messages that failed to be sent. 1) `'NONE'` does not save failed messages into cache and just removes the failed message from view. 2) `'MANUAL'` saves failed messages into cache but doesn't resend them automatically. 3) `'AUTOMATIC'` saves failed messages and also resend them when sync resumes or the failed messages are fetched from cache. (default: `'NONE'`) |
+| automaticMessageResendRetryCount | Integer                                 | Set the retry count of automatic resend. Once the number of failures in resending message reaches to it, the message remains as failed message and not going to get resent again. Only available when `messageResentPolicy` is set to `AUTOMATIC`. (default: `SendBirdSyncManager.Options.INFINITE`)                                                                                                                              |
+| maxFailedMessageCountPerChannel  | Integer                                 | Set the maximum number of failed messages allowed in a channel. If the number of failed messages exceeds the count, the oldest failed message would get trimmed out. (default: `SendBirdSyncManager.Options.INFINITE`)                                                                                                                                                                                                            |
+| failedMessageRetentionDays       | Integer                                 | Set the number of days to retain failed messages. Failed messages which pass the retention period since its creation will be removed automatically. (default: `7`)                                                                                                                                                                                                                                    |
+
+You can initialize SyncManager with options like below:
+
+```java
+SendBirdSyncManager.Options options = new SendBirdSyncManager.Options.Builder()
+        .setMessageCollectionCapacity(2000)
+        .setMessageResendPolicy(SendBirdSyncManager.MessageResendPolicy.MANUAL)
+        .setMaxFailedMessageCountPerChannel(5).build();
+
+SendBirdSyncManager.setup(getApplicationContext(), USER_ID, options, new CompletionHandler() {
     @Override
     public void onCompleted(SendBirdException e) {
         if (e != null) {
@@ -59,6 +92,7 @@ Collection is a component to manage data related to a single view. `ChannelColle
 To meet the purpose, each collection has event subscriber and data fetcher. Event subscriber listens data event so that it could apply data update into view, and data fetcher loads data from cache or server and sends the data to event handler.
 
 #### ChannelCollection
+
 Channel is frequently mutable data where chat is actively going - channel's last message and unread message count may update very often. Even the position of each channel is changing drastically since many apps sort channels by the most recent message. In that context, `ChannelCollection` manages synchronization like below:
 
 1. Channel collection fulfills full channel sync (one-time) and change log sync when a collection is created.
@@ -147,27 +181,57 @@ You can dismiss collection when the collection is obsolete and no longer used.
 collection.remove();
 ```
 
+Regarding on sending a message, `MessageCollection` manages it along with the request lifecycle. Each message has `RequestState` property which indicates the send request state.
+
+| State     | Description                                                                                                                                                                                                                                          |
+| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PENDING   | The message returned by calling `sendUserMessage()` or `sendFileMessage()`. This message is waiting for the response to fix the final state of the message - `'failed'` or `'succeeded'`. Pending message is not stored in cache.                    |
+| FAILED    | The message failed to be sent and fallen to the callback with error. It would be sent again automatically if the `MessageResendPolicy` is set to `'AUTOMATIC'`. Otherwise, you can send it again via `resendUserMessage()` in SendBird SDK manually. |
+| SUCCEEDED | The message successfully sent.                                                                                                                                                                                                                       |
+
+> Note: If `sendUserMessage()` fails due to invalid parameter, it doesn't yield a failed message but `null` instead, which means it'd not be queued for automatic resend.
+
 `MessageCollection` has event handler that you can implement and add to the collection. Event handler is named as `MessageCollectionHandler` and it receives `action` and `message` list when an event has come. The `action` is a keyword to notify what happened to the channel, and the `message` is the target `BaseMessage` instance.
 
 ```java
 MessageCollectionHandler messageCollectionHandler = new MessageCollectionHandler() {
     @Override
-    public void onMessageEvent(MessageCollection collection, final List<BaseMessage> messages, final MessageEventAction action) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                switch (action) {
-                    case INSERT:
-                        break;
-                    case REMOVE:
-                        break;
-                    case UPDATE:
-                        break;
-                    case CLEAR:
-                        break;
-                }
-            }
-        });
+    public void onSucceededMessageEvent(MessageCollection collection, List<BaseMessage> messages, MessageEventAction action) {
+        switch (action) {
+            case INSERT:
+                break;
+            case UPDATE:
+                break;
+            case REMOVE:
+                break;
+            case CLEAR:
+                break;
+        }
+    }
+
+    @Override
+    public void onPendingMessageEvent(MessageCollection collection, List<BaseMessage> messages, MessageEventAction action) {
+        switch (action) {
+            case INSERT:
+                break;
+            case REMOVE:
+                break;
+        }
+    }
+
+    @Override
+    public void onFailedMessageEvent(MessageCollection collection, List<BaseMessage> messages, MessageEventAction action, FailedMessageEventActionReason reason) {
+        switch (action) {
+            case INSERT:
+                break;
+            case UPDATE:
+                break;
+            case REMOVE:
+                break;
+        }
+    }
+    @Override
+    public void onNewMessage(MessageCollection collection, BaseMessage message) {
     }
 };
 collection.setCollectionHandler(messageCollectionHandler);
@@ -179,12 +243,23 @@ collection.setCollectionHandler(null);
 `MessageCollection` has data fetcher by direction: `PREVIOUS` and `NEXT`. It fetches data from cache only and never request to server. If no more data is available in a certain direction, it subscribes the background sync internally and fetches the synced messages right after the sync progresses.
 
 ```java
-collection.fetch(MessageCollection.Direction.PREVIOUS, new CompletionHandler() {
+collection.fetchSucceededMessages(MessageCollection.Direction.PREVIOUS, new CompletionHandler() {
     @Override
     public void onCompleted(SendBirdException e) {
     }
 });
-collection.fetch(MessageCollection.Direction.NEXT, new CompletionHandler() {
+
+collection.fetchSucceededMessages(MessageCollection.Direction.NEXT, new CompletionHandler() {
+    @Override
+    public void onCompleted(SendBirdException e) {
+    }
+});
+```
+
+Or you'd like to fetch all failed messages.
+
+```java
+collection.fetchFailedMessages(new CompletionHandler() {
     @Override
     public void onCompleted(SendBirdException e) {
     }
@@ -211,14 +286,7 @@ SyncManager listens message event such as `onMessageReceived` and `onMessageUpda
 UserMessage previewMessage = channel.sendUserMessage("Your Message", new BaseChannel.SendUserMessageHandler() {
     @Override
     public void onSent(UserMessage userMessage, SendBirdException e) {
-        if (e != null) {
-            // Error!
-            collection.deleteMessage(userMessage);
-            return;
-        }
-
-        // append sent message.
-        collection.appendMessage(userMessage);
+        collection.handleSendMessageResponse(userMessage, e);
     }
 });
 
@@ -237,7 +305,7 @@ channel.updateUserMessage(message.getMessageId(), "Updated message", null, null,
 });
 ```
 
-It works only for messages sent by `currentUser` which means the message sender should be `currentUser`.
+Once it is delivered to a collection, it'd not only apply the change into the current collection but also propagate the event into other collections so that the change could apply to other views automatically. It works only for messages sent by `currentUser` which means the message sender should be `currentUser`.
 
 ### Connection Lifecycle
 
