@@ -1,5 +1,8 @@
 ## Change Log
 
+### v.1.1.4 (Sep 6, 2019)
+* Improved stability.
+
 ### v1.1.3 (Aug 2, 2019)
 * Added features that supports storing and resending messages which `RequestState` is `FAILED`.
    * Added `fetchFailedMessages()` in `MessageCollection` to fetch `FailedMessage` in local database.
