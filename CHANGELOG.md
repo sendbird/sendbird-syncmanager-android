@@ -1,6 +1,9 @@
 ## Change Log
 
-### v.1.1.4 (Sep 6, 2019)
+### v1.1.5 (Oct 7, 2019)
+* Improved stability.
+
+### v1.1.4 (Sep 6, 2019)
 * Improved stability.
 
 ### v1.1.3 (Aug 2, 2019)
