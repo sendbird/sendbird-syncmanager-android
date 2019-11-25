@@ -3,7 +3,7 @@
 
 [![Platform](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/sendbird/sendbird-syncmanager-android)
 [![Languages](https://img.shields.io/badge/language-java-orange.svg)](https://github.com/sendbird/sendbird-syncmanager-android)
-[![Maven](https://img.shields.io/badge/maven-v1.1.10-green.svg)](https://github.com/sendbird/sendbird-syncmanager-android/tree/master/com/sendbird/sdk/sendbird-syncmanager/1.1.10)
+[![Maven](https://img.shields.io/badge/maven-v1.1.11-green.svg)](https://github.com/sendbird/sendbird-syncmanager-android/tree/master/com/sendbird/sdk/sendbird-syncmanager/1.1.11)
 [![Commercial License](https://img.shields.io/badge/license-Commercial-brightgreen.svg)](https://github.com/sendbird/sendbird-syncmanager-android/blob/master/LICENSE.md)
 
 SendBird SyncManager is chat data sync management add-on for SendBird. SyncManager offers an event-based data management framework so that each view would listen data event in event handler in order to update the view. And it stores the data into SQLite which implements local caching for faster loading.
@@ -20,10 +20,10 @@ repositories {
 }
 dependencies {
     // SyncManager
-    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.10'
+    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.11'
 
     // SendBird
-    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.107'
+    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.108'
 }
 ```
 
