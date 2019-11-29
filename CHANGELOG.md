@@ -1,5 +1,8 @@
 ## Change Log
 
+### v1.1.13 (Nov 29, 2019)
+* Improved stability.
+
 ### v1.1.12 (Nov 27, 2019)
 * Improved stability.
 
