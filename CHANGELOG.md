@@ -1,5 +1,11 @@
 ## Change Log
 
+### v1.1.14 (Dec 4, 2019)
+* Added features that supports fetching messages.
+   * Added `fetchAllNextMessages()` in `MessageCollection` to fetch all new `SucceededMessage` in local database.
+   * Added `FetchCompletionHandler(boolean hasMore, SendBirdException e)` to use in `fetchSucceededMessages()`, with flag whether there's more data to fetch.
+* Improved stability.
+
 ### v1.1.13 (Nov 29, 2019)
 * Improved stability.
 
