@@ -1,5 +1,8 @@
 ## Change Log
 
+### v1.1.15 (Dec 6, 2019)
+* Improved stability.
+
 ### v1.1.14 (Dec 4, 2019)
 * Added features that supports fetching messages.
    * Added `fetchAllNextMessages()` in `MessageCollection` to fetch all new `SucceededMessage` in local database.
