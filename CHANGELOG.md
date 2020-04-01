@@ -1,5 +1,11 @@
 ## Change Log
 
+### v1.1.19 (Apr 1, 2020)
+* Changes made to `SendBirdSyncManager.Options.AutomaticMessageResendRetryCount`.
+  * Changed it's default value to 10.
+  * The value should be in between 1 to 50, inclusive.
+* Improved stability.
+
 ### v1.1.18 (Feb 5, 2020)
 * Improved stability.
 
