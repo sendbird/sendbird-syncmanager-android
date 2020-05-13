@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.1.20 (May 13, 2020)
+* Added SyncManager version information to User-Agent
+* Improved stability.
+
 ### v1.1.19 (Apr 1, 2020)
 * Changes made to `SendBirdSyncManager.Options.AutomaticMessageResendRetryCount`.
   * Changed it's default value to 10.

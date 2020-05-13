@@ -20,10 +20,10 @@ repositories {
 }
 dependencies {
     // SyncManager
-    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.19'
+    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.20'
 
     // SendBird
-    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.126'
+    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.129'
 }
 ```
 
