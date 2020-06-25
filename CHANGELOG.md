@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.1.21 (Jun 25, 2020)
+* Changed resending failed messages job to be thread-safe.
+* Improved stability.
+
 ### v1.1.20 (May 13, 2020)
 * Added SyncManager version information to User-Agent
 * Improved stability.
