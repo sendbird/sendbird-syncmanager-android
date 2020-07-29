@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.1.22 (Jul 29, 2020)
+* Fixed `MessageCollectionHandler.onSucceededMessageEvent()` not being called in some cases when failed message resend is successful.
+* Improved stability.
+
 ### v1.1.21 (Jun 25, 2020)
 * Changed resending failed messages job to be thread-safe.
 * Improved stability.
