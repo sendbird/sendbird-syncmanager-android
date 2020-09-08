@@ -1,5 +1,8 @@
 ## Change Log
 
+### v1.1.23 (Sep 8, 2020)
+* Fixed `MessageCollectionHandler.onNewMessage` not being fired in certain situations when receiving a new message.
+
 ### v1.1.22 (Jul 29, 2020)
 * Fixed `MessageCollectionHandler.onSucceededMessageEvent()` not being called in some cases when failed message resend is successful.
 * Improved stability.
