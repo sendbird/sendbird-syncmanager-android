@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.1.24 (Sep 11, 2020)
+* Prevent duplicate message being inserted in `MessageCollection`.
+* Improved stability.
+
 ### v1.1.23 (Sep 8, 2020)
 * Fixed `MessageCollectionHandler.onNewMessage` not being fired in certain situations when receiving a new message.
 
