@@ -1,5 +1,10 @@
 ## Change Log
 
+### v1.1.26 (Sep 29, 2020) with Core SDK `v3.0.147`
+
+* Added `MessageCollection#fetchPendingMessages`.
+* Sendbird Core SDK is now embedded in the SyncManager.
+
 ### v1.1.24 (Sep 11, 2020)
 * Prevent duplicate message being inserted in `MessageCollection`.
 * Improved stability.
