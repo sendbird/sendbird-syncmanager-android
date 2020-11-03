@@ -1,5 +1,9 @@
 ## Change Log
 
+### v1.1.28 (Nov 03, 2020) with Core SDK `v3.0.150`
+
+* Added `MessageCollection#deleteMessageByRequestId` and `MessageCollection#deleteMessageByMessageId`.
+
 ### v1.1.27 (Oct 20, 2020) with Core SDK `v3.0.149`
 
 * Fixed a bug in `FailedMessageDispatcher` caused by a timing issue. 
