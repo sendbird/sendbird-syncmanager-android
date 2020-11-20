@@ -49,11 +49,11 @@ The minimum requirements for SyncManager for Android are:
 
 ## Getting started
 
-This section gives you information you need to get started with Sendbird SyncManager for JavaScript. 
+This section gives you information you need to get started with Sendbird SyncManager for Android. 
 
 ### Try the sample app
 
-Download the sample app to test the core features of SyncManager for Javascript. 
+Download the sample app to test the core features of SyncManager for Android. 
 
 - https://github.com/sendbird/SendBird-Android/tree/master/syncmanager
 
