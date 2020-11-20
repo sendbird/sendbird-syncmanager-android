@@ -15,7 +15,7 @@
 
 ## Introduction
 
-SyncManager for Android is a [Chat SDK](https://github.com/sendbird/SendBird-SDK-Android) add-on that optimizes the user caching experience by interlinking the synchronization of the local data storage with the chat data in Sendbird server through an event-driven structure.
+**Sendbird SyncManager** for Android is a [Chat SDK](https://github.com/sendbird/SendBird-SDK-Android) add-on that optimizes the user caching experience by interlinking the synchronization of the local data storage with the chat data in Sendbird server through an event-driven structure.
 
 ### How it works
 
