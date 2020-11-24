@@ -42,8 +42,9 @@ This section shows the prerequisites you need to check to use Sendbird SyncManag
 The minimum requirements for SyncManager for Android are:
 
 - `Android 4.0 (API level 14) or higher`
-- `Java 7 or higher`
-- `Gradle 3.4.0 or higher`
+- `Java 8 or higher`
+- `Sendbird Chat SDK for Android 3.0.150 or higher` (3.0.150 is embedded in SyncManager 1.1.28. If you want to use a higher version, you can directly declare a dependency on the higher version.)
+
 
 <br />
 
@@ -84,10 +85,10 @@ repositories {
     maven { url "https://raw.githubusercontent.com/sendbird/sendbird-syncmanager-android/master/" }
 }
 dependencies {
-    // SyncManager SDK for Android (Latest, embeds sendbird sdk 3.0.147)
-    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.26'
+    // SyncManager SDK for Android (Latest, embeds sendbird sdk 3.0.150)
+    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.28'
 
     // Chat SDK for Android (If you want to use higher version than the version embedded in the sync manager)
-    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.149'
+    implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.150'
 }
 ```
