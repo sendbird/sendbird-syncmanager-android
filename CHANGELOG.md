@@ -1,5 +1,8 @@
 ## Change Log
 
+### v1.1.29 (Dec 1, 2020) with Core SDK `v3.0.152`
+* Improved stability.
+
 ### v1.1.28 (Nov 03, 2020) with Core SDK `v3.0.150`
 
 * Added `MessageCollection#deleteMessageByRequestId` and `MessageCollection#deleteMessageByMessageId`.
