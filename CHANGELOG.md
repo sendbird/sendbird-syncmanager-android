@@ -1,5 +1,8 @@
 ## Change Log
 
+### v1.1.30 (Mar 02, 2021) with Core SDK `v3.0.158`
+* Fixed a flaky bug where a message could be missing when fetching messages from the server. 
+
 ### v1.1.29 (Dec 1, 2020) with Core SDK `v3.0.152`
 * Improved stability.
 
