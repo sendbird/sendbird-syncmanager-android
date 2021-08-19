@@ -2,7 +2,7 @@
 
 [![Platform](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/sendbird/sendbird-syncmanager-android)
 [![Languages](https://img.shields.io/badge/language-java-orange.svg)](https://github.com/sendbird/sendbird-syncmanager-android)
-[![Maven](https://img.shields.io/badge/maven-v1.1.30-green.svg)](https://github.com/sendbird/sendbird-syncmanager-android/tree/master/com/sendbird/sdk/sendbird-syncmanager/1.1.30)
+[![Maven](https://img.shields.io/badge/maven-v1.1.31-green.svg)](https://github.com/sendbird/sendbird-syncmanager-android/tree/master/com/sendbird/sdk/sendbird-syncmanager/1.1.31)
 [![Commercial License](https://img.shields.io/badge/license-Commercial-brightgreen.svg)](https://github.com/sendbird/sendbird-syncmanager-android/blob/master/LICENSE.md)
 
 ## Table of contents
@@ -43,7 +43,7 @@ The minimum requirements for SyncManager for Android are:
 
 - `Android 4.0 (API level 14) or higher`
 - `Java 8 or higher`
-- `Sendbird Chat SDK for Android 3.0.158 or higher` (3.0.158 is embedded in SyncManager 1.1.30. If you want to use a higher version, you can directly declare a dependency on the higher version.)
+- `Sendbird Chat SDK for Android 3.0.158 or higher` (3.0.158 is embedded in SyncManager 1.1.31. If you want to use a higher version, you can directly declare a dependency on the higher version.)
 
 
 <br />
@@ -96,7 +96,7 @@ Then, add the dependency to the project's top-level `build.gradle` file.
 ```gradle
 dependencies {
     // SyncManager SDK for Android (Latest, embeds Sendbird Chat SDK 3.0.158)
-    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.30'
+    implementation 'com.sendbird.sdk:sendbird-syncmanager:1.1.31'
 
     // Chat SDK for Android (If you want to use higher version than the version embedded in the SyncManager)
     implementation 'com.sendbird.sdk:sendbird-android-sdk:3.0.160'

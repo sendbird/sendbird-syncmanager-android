@@ -1,5 +1,8 @@
 ## Change Log
 
+### v1.1.31 (Aug 20, 2021) with Core SDK `v3.0.170`
+* Fixed a bug in MessageCollection which could block the main thread.
+
 ### v1.1.30 (Mar 02, 2021) with Core SDK `v3.0.158`
 * Fixed a flaky bug where a message could be missing when fetching messages from the server. 
 
