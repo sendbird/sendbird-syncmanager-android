@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Sendbird SyncManager Public SDK Android 
+  description: Sendbird SyncManager Public SDK for Android
+  annotations:
+    github.com/project-slug: sendbird/sendbird-syncmanager-android
+spec:
+  type: library
+  lifecycle: production
+  owner: dep-client-platform
+  system: sendbird-chat
